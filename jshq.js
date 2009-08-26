@@ -1,10 +1,7 @@
 // in-browser content display
 
 var JSHQ = function() {
-    var head = document.getElementsByTagName("head")[0];
-    var style = document.createElement("style");
-    style.appendChild(document.createTextNode("#content { display: none }"));
-    head.appendChild(style);
+    $('<style type="text/css" />').text("#content { display: none }").appendTo('head');
     
     // safe onload handler addition courtesy of Simon Willison
     // http://simonwillison.net/2004/May/26/addLoadEvent/

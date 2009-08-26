@@ -19,15 +19,13 @@ var JSHQ = function() {
     };
     
     var getJS = function() {
-        var baseURL = JSHQ._getBaseURL();
-        var LAB = $LAB
-            .script("http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js");
         if (!window.Template) {
-            LAB
-            .script(baseURL + "lib/wiky.js")
-            .script(baseURL + "lib/wiky.lang.js");
+	        var baseURL = JSHQ.getBaseURL();
+            $LAB
+               .script(baseURL + "lib/wiky.js")
+               .script(baseURL + "lib/wiky.lang.js");
         }
-        LAB.block(JSHQ.styleContent);
+        $LAB.block(JSHQ.styleContent);
     };
     
     addLoadEvent(getJS);
@@ -40,24 +38,29 @@ var JSHQ = function() {
         addLoadEvent: addLoadEvent,
         
         // Taken from Dojo
-        _getBaseURL: function() {
-            if(document && document.getElementsByTagName){
-    			var scripts = document.getElementsByTagName("script");
-    			var rePkg = /jshq.js(\W|$)/i;
-    			for(var i = 0; i < scripts.length; i++){
-    				var src = scripts[i].getAttribute("src");
-    				if(!src){ continue; }
-    				var m = src.match(rePkg);
-    				if(m){
-    					// find out where we came from
-    					if(!JSHQ.options.baseURL){
-    						JSHQ.options.baseURL = src.substring(0, m.index);
-    					}
-    					break;
-    				}
-    			}
-    		}
-    		return JSHQ.options.baseURL;
+        getBaseURL: function() {
+            if( !JSHQ.options.baseURL ) {
+                var src = jQuery('script[src$=jshq.js]').attr('src');
+                JSHQ.options.baseURL = src.replace(/jshq\.js$/, '');
+            }
+            return JSHQ.options.baseURL;
+        },
+        
+        getRoot: function() {
+            var root = location.href.split('/');
+            root.pop();
+            $.each(JSHQ.getBaseURL().split('/'), function(i, item) {
+                if( item === ".." )
+                	root.pop();
+                else
+                	root.push(item);
+            });
+            return root.join('/');
+        },
+        
+        getPath: function() {
+        	var root = JSHQ.getRoot();
+        	return location.href.substr(root.length);
         },
         
         styleContent: function() {
@@ -82,6 +85,14 @@ var JSHQ = function() {
                     var html = Wiky.toHtml(text);
                     $(this).replaceWith(html);
                 });
+                
+                $('#menu > ul > li > a[data-base]').each(function() {
+                	var base = $(this).attr('data-base');
+                	if ( JSHQ.getPath().substr(0, base.length) === base )
+                		$(this).addClass("active");
+                });
+                if ( !$('#menu > ul > li > a.active').length )
+                	$('#menu > ul > li > a:first[data-base="/"]').addClass("active");
             });
         }
     }

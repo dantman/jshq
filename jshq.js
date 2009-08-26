@@ -70,13 +70,6 @@ var JSHQ = function() {
                 return $('<div>', doc).append(this.eq(0).clone()).html();
             };
             
-            $("<link>").attr({rel: "stylesheet", type: "text/css",
-                href: baseURL + "lib/wiky.css"}).appendTo("head");
-            $("<link>").attr({rel: "stylesheet", type: "text/css",
-                href: baseURL + "lib/wiky.lang.css"}).appendTo("head");
-            $("<link>").attr({rel: "stylesheet", type: "text/css",
-                href: baseURL + "theme/style.css"}).appendTo("head");
-            
             $.get(baseURL + "theme/contentwrap.html", function(data) {
                 window.$ = jQuery;
                 var currentContent = $("#content").outerHTML();

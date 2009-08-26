@@ -3,19 +3,7 @@
 <head>
   <title>CommonJS API</title>
   <link rel=stylesheet type="text/css" href="../jshq.css">
-  <script src="../jshq.js"></script>
   <link rel=stylesheet type="text/css" href="../theme/tablesorter/style.css">
-  <script type="text/javascript">
-    JSHQ.addLoadEvent(function() {
-      $LAB
-        .script("../lib/jquery.tablesorter.min.js")
-        .block(function() {
-          setTimeout(function() {
-            $('.tablesorter').tablesorter();
-          }, 10);
-        });
-    });
-  </script>
 </head>
 <body>
   <div id="content"><h1>CommonJS</h1>
@@ -56,5 +44,17 @@
     </ul>
     
 </div>
+<script src="../jshq.js"></script>
+<script type="text/javascript">
+JSHQ.addLoadEvent(function() {
+  $LAB
+    .script("../lib/jquery.tablesorter.min.js")
+    .block(function() {
+      setTimeout(function() {
+        $('.tablesorter').tablesorter();
+      }, 10);
+    });
+});
+</script>
 </body>
 </html>
